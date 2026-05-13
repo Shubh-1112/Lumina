@@ -345,7 +345,17 @@ const Dashboard = () => {
                   <h3 style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', tracking: '0.1em' }}>Upcoming</h3>
                   <Calendar size={20} color="var(--on-surface-variant)" />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div 
+                  className="brutalist-scrollbar" 
+                  style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '24px', 
+                    maxHeight: '380px', 
+                    overflowY: 'auto',
+                    paddingRight: '12px'
+                  }}
+                >
                   {myTasks.length === 0 ? (
                     <p style={{ fontSize: '13px', opacity: 0.5, fontStyle: 'italic' }}>No upcoming deadlines scheduled.</p>
                   ) : (

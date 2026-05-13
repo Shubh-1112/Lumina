@@ -369,3 +369,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
+
+/* Custom Brutalist Scrollbar */
+.brutalist-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.brutalist-scrollbar::-webkit-scrollbar-track {
+  background: var(--surface-container-low);
+  border-left: 1px solid var(--outline-variant);
+}
+
+.brutalist-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border: 1px solid var(--on-surface);
+}
+
+.brutalist-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9333ea;
+}
