@@ -19,9 +19,12 @@ app = FastAPI(
 origins = [
     settings.FRONTEND_URL,
     "https://lumina-task-manager.onrender.com",
+    "https://lumina-task-manager.onrender.com/",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+# Ensure no None values
+origins = [o for o in origins if o]
 
 app.add_middleware(
     CORSMiddleware,
