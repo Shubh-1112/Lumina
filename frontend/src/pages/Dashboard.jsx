@@ -351,9 +351,11 @@ const Dashboard = () => {
                     display: 'flex', 
                     flexDirection: 'column', 
                     gap: '24px', 
-                    maxHeight: '380px', 
+                    maxHeight: '300px', 
                     overflowY: 'auto',
-                    paddingRight: '12px'
+                    paddingRight: '12px',
+                    paddingTop: '4px',
+                    paddingBottom: '4px'
                   }}
                 >
                   {myTasks.length === 0 ? (

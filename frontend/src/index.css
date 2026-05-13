@@ -372,17 +372,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* Custom Brutalist Scrollbar */
 .brutalist-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .brutalist-scrollbar::-webkit-scrollbar-track {
-  background: var(--surface-container-low);
+  background: rgba(0, 0, 0, 0.05);
   border-left: 1px solid var(--outline-variant);
 }
 
 .brutalist-scrollbar::-webkit-scrollbar-thumb {
   background: var(--primary);
-  border: 1px solid var(--on-surface);
+  border: 2px solid var(--on-surface);
+  border-radius: 0;
 }
 
 .brutalist-scrollbar::-webkit-scrollbar-thumb:hover {
