@@ -60,6 +60,19 @@ const Projects = () => {
     }
   }, [currentUser?.id]);
 
+  // Handle Animations separately and safely
+  useEffect(() => {
+    if (!loading && projects.length > 0) {
+      const targets = document.querySelectorAll('.project-card-animate');
+      if (targets.length > 0) {
+        gsap.fromTo(targets, 
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power4.out', overwrite: true }
+        );
+      }
+    }
+  }, [loading, projects.length]);
+
   const fetchProjects = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -72,13 +85,6 @@ const Projects = () => {
       const response = await api.get('/projects', token);
       if (response.success) {
         setProjects(response.data);
-        // Staggered entrance after data loads
-        setTimeout(() => {
-          gsap.fromTo('.project-card-animate', 
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power4.out' }
-          );
-        }, 0);
       }
     } catch (err) {
       console.error('Failed to fetch projects', err);
@@ -202,8 +208,7 @@ const Projects = () => {
                     width: '100%', 
                     borderBottom: '8px solid var(--on-surface)', 
                     transition: 'all 0.2s',
-                    cursor: 'pointer',
-                    opacity: 0 // Initial state for GSAP
+                    cursor: 'pointer'
                   }} 
                   className="group hover:bg-on-surface hover:text-surface-bright project-card-animate"
                 >
