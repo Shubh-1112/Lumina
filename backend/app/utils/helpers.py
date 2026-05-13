@@ -5,10 +5,11 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status
 from app.config.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256", "bcrypt"], deprecated="auto")
 
 def hash_password(password: str) -> str:
-    # bcrypt has a 72-byte limit; truncate manually to avoid errors
+    # PBKDF2 doesn't have the 72-byte limit, but we'll keep the truncation 
+    # logic just in case we fall back to bcrypt or for general safety.
     return pwd_context.hash(password[:72])
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
