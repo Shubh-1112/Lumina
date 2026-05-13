@@ -16,22 +16,26 @@ app = FastAPI(
     redoc_url="/api/redoc"
 )
 
+# CORS Configuration
 origins = [
     settings.FRONTEND_URL,
     "https://lumina-task-manager.onrender.com",
-    "https://lumina-task-manager.onrender.com/",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:3000",
 ]
-# Ensure no None values
-origins = [o for o in origins if o]
+
+# Clean up and normalize origins
+origins = [o.rstrip("/") for o in origins if o]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=r"https://.*\.onrender\.com|http://localhost:.*|http://127\.0\.0\.1:.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 @app.on_event("startup")
@@ -124,5 +128,20 @@ async def health():
     return {"status": "healthy"}
 
 @app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
-    return JSONResponse(status_code=500, content={"success": False, "message": str(exc), "data": None})
+async def global_exception_handler(request: Request, exc: Exception):
+    import traceback
+    print(f"❌ GLOBAL ERROR: {str(exc)}")
+    traceback.print_exc()
+    
+    # Manually add CORS headers to ensure the browser sees the actual error
+    origin = request.headers.get("origin")
+    headers = {}
+    if origin:
+        headers["Access-Control-Allow-Origin"] = origin
+        headers["Access-Control-Allow-Credentials"] = "true"
+
+    return JSONResponse(
+        status_code=500,
+        content={"success": False, "message": f"Server Error: {str(exc)}", "data": None},
+        headers=headers
+    )

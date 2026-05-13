@@ -11,11 +11,17 @@ router = APIRouter(prefix="/api/invite", tags=["Invite"])
 @router.get("/{token}")
 async def get_invite_info(token: str, current_user=Depends(get_current_user_silent), db=Depends(get_database)):
     """Public endpoint — get info about an invite (no auth required)"""
+    print(f"🔍 DEBUG: Fetching invite info for token: {token}")
     invite = await db.inviteTokens.find_one({"token": token})
     if not invite:
+        print(f"❌ DEBUG: Invite not found for token: {token}")
         raise HTTPException(status_code=404, detail="Invite link is invalid or expired")
-    if invite.get("expiresAt") and invite["expiresAt"] < datetime.now(timezone.utc):
-        raise HTTPException(status_code=410, detail="Invite link has expired")
+    if invite.get("expiresAt"):
+        expires_at = invite["expiresAt"]
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        if expires_at < datetime.now(timezone.utc):
+            raise HTTPException(status_code=410, detail="Invite link has expired")
     project = await db.projects.find_one({"_id": ObjectId(invite["projectId"])})
     if not project:
         raise HTTPException(status_code=404, detail="Project no longer exists")
@@ -23,15 +29,16 @@ async def get_invite_info(token: str, current_user=Depends(get_current_user_sile
     # Check membership status if logged in
     status = "none"
     if current_user:
-        user_id = current_user["_id"]
+        user_id = str(current_user["_id"])
+        members = project.get("members") or []
         # Already a member?
-        if any(str(m) == str(user_id) for m in project.get("members", [])):
+        if any(str(m) == user_id for m in members):
             status = "member"
         else:
             # Pending request?
             existing_request = await db.joinRequests.find_one({
                 "projectId": str(invite["projectId"]),
-                "userId": str(user_id),
+                "userId": user_id,
                 "status": "pending"
             })
             if existing_request:

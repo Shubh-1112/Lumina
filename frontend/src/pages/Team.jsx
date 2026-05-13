@@ -243,33 +243,43 @@ const Team = () => {
                  <p style={{ color: 'var(--on-surface-variant)', fontSize: 'clamp(14px, 2vw, 18px)', marginTop: '16px' }}>Project-wise collaboration breakdown.</p>
                </div>
 
-               <button 
-                onClick={() => {
-                  if (projects.length > 0) {
-                    setCurrentProject(projects[0]);
-                    handleGenerateInvite(projects[0]);
-                  }
-                }}
-                style={{ 
-                  backgroundColor: 'var(--primary)', 
-                  color: 'var(--on-primary)', 
-                  border: 'none', 
-                  padding: '16px 32px', 
-                  fontSize: '14px', 
-                  fontWeight: '900', 
-                  textTransform: 'uppercase', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '12px', 
-                  cursor: 'pointer',
-                  borderRadius: '12px',
-                  boxShadow: '0 8px 24px rgba(208, 188, 255, 0.3)'
-                }}
-                className="hover:scale-105 transition-all active:scale-95"
-              >
-                <UserPlus size={20} />
-                Invite Member
-              </button>
+               {/* Only show Invite button if user is admin/manager on at least one project */}
+               {projects.some(p => {
+                 const myMember = p.members?.find(m => m.id === currentUser?.id);
+                 return myMember?.role === 'admin' || myMember?.role === 'manager';
+               }) && (
+                 <button 
+                  onClick={() => {
+                    const firstManaged = projects.find(p => {
+                      const m = p.members?.find(mem => mem.id === currentUser?.id);
+                      return m?.role === 'admin' || m?.role === 'manager';
+                    });
+                    if (firstManaged) {
+                      setCurrentProject(firstManaged);
+                      handleGenerateInvite(firstManaged);
+                    }
+                  }}
+                  style={{ 
+                    backgroundColor: 'var(--primary)', 
+                    color: 'var(--on-primary)', 
+                    border: 'none', 
+                    padding: '16px 32px', 
+                    fontSize: '14px', 
+                    fontWeight: '900', 
+                    textTransform: 'uppercase', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '12px', 
+                    cursor: 'pointer',
+                    borderRadius: '12px',
+                    boxShadow: '0 8px 24px rgba(208, 188, 255, 0.3)'
+                  }}
+                  className="hover:scale-105 transition-all active:scale-95"
+                >
+                  <UserPlus size={20} />
+                  Invite Member
+                </button>
+               )}
              </div>
           </header>
 
@@ -588,9 +598,15 @@ const Team = () => {
                       fontWeight: '600'
                     }}
                   >
-                    {projects.map(p => (
-                      <option key={p.id} value={p.id}>{p.name}</option>
-                    ))}
+                    {projects
+                      .filter(p => {
+                        const m = p.members?.find(mem => mem.id === currentUser?.id);
+                        return m?.role === 'admin' || m?.role === 'manager';
+                      })
+                      .map(p => (
+                        <option key={p.id} value={p.id}>{p.name}</option>
+                      ))
+                    }
                   </select>
                 </div>
 
