@@ -38,7 +38,7 @@ const JoinProject = () => {
     fetchInviteInfo();
   }, [token, navigate]);
 
-  // Real-time synchronization for approval
+  // Real-time synchronization for approval (SSE + Polling Fallback)
   useEffect(() => {
     let user = null;
     try {
@@ -50,28 +50,62 @@ const JoinProject = () => {
     
     if (!user || !user.id || !requested) return;
 
-    console.log('Watching for approval status...');
+    // 1. SSE Connection
+    console.log('Watching for approval status via SSE...');
     const eventSource = new EventSource(`${API_BASE_URL}/events/user/${user.id}`);
+
+    const handleApproval = (data) => {
+      toast.success(`Welcome! Your request for "${data.projectName || 'the project'}" was accepted.`, {
+        duration: 5000,
+        icon: '🎉',
+      });
+      setTimeout(() => {
+        navigate(`/projects/${data.projectId}`);
+      }, 1500);
+    };
 
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        if (data.type === 'JOIN_REQUEST_ACCEPTED' && data.data.projectId === inviteInfo?.projectId) {
-          toast.success(`Welcome! Your request for "${data.data.projectName}" was accepted.`, {
-            duration: 5000,
-            icon: '🎉',
-          });
-          setTimeout(() => {
-            navigate(`/projects/${data.data.projectId}`);
-          }, 1500);
+        if (data.type === 'JOIN_REQUEST_ACCEPTED') {
+          // If the project ID matches (or just accept any approval if we're on this page)
+          if (!inviteInfo?.projectId || data.data.projectId === inviteInfo.projectId) {
+            handleApproval(data.data);
+          }
         }
       } catch (err) {
         console.error('Error parsing SSE message', err);
       }
     };
 
-    return () => eventSource.close();
-  }, [requested, inviteInfo, navigate]);
+    eventSource.onerror = () => {
+      console.warn('SSE connection failed, falling back to polling...');
+      eventSource.close();
+    };
+
+    // 2. Polling Fallback (Check status every 8 seconds)
+    const pollInterval = setInterval(async () => {
+      try {
+        const userToken = localStorage.getItem('token');
+        const response = await api.get(`/invite/${token}`, userToken);
+        if (response.success && response.data.status === 'member') {
+          console.log('Approval detected via polling!');
+          clearInterval(pollInterval);
+          handleApproval({
+            projectId: response.data.projectId,
+            projectName: response.data.projectName
+          });
+        }
+      } catch (err) {
+        console.error('Polling error', err);
+      }
+    }, 8000);
+
+    return () => {
+      eventSource.close();
+      clearInterval(pollInterval);
+    };
+  }, [requested, inviteInfo, navigate, token]);
 
   const handleJoin = async () => {
     const userToken = localStorage.getItem('token');
