@@ -45,180 +45,211 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row" style={{ backgroundColor: 'var(--background)', color: 'var(--on-surface)', fontFamily: 'var(--font-headline)', overflowX: 'hidden', minHeight: '100vh' }}>
+    <div className="flex flex-col lg:flex-row" style={{ backgroundColor: 'var(--background)', color: 'var(--on-surface)', fontFamily: 'var(--font-headline)', minHeight: '100vh', overflow: 'hidden' }}>
       
-      {/* Branding Side - Vibrant Purple */}
+      {/* Left Section: Architectural Brand Presence */}
       <section 
         className="hidden lg:flex"
         style={{ 
-          width: '40%', 
+          flex: 1.2, 
           backgroundColor: '#6b38d4', 
           position: 'relative', 
           flexDirection: 'column', 
           justifyContent: 'space-between', 
-          padding: '64px', 
-          overflow: 'hidden' 
+          padding: '80px',
+          borderRight: '4px solid var(--on-surface)',
+          backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"), linear-gradient(135deg, #6b38d4 0%, #381e72 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundBlendMode: 'overlay'
         }}>
-        <div style={{ zIndex: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <h1 style={{ fontSize: '48px', fontWeight: '900', color: 'white', textTransform: 'uppercase', letterSpacing: '-0.02em', margin: 0 }}>Lumina</h1>
-          </div>
-          <p style={{ fontSize: '12px', fontWeight: '700', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Ready to work</p>
-        </div>
-
-        <div style={{ zIndex: 10 }}>
-          <h2 style={{ fontSize: 'clamp(60px, 8vw, 100px)', fontWeight: '900', color: 'white', textTransform: 'uppercase', lineHeight: 0.85, letterSpacing: '-0.05em' }}>
-            Work<br/>Done<br/>Faster
-          </h2>
-          <p style={{ fontSize: 'clamp(20px, 3vw, 32px)', fontWeight: '700', color: 'white', marginTop: '40px', textTransform: 'uppercase', opacity: 0.8 }}>
-            Organize every project in one place
-          </p>
-        </div>
-
-        {/* Decorative elements */}
-        <div style={{ position: 'absolute', bottom: '24px', left: '24px', width: '32px', height: '32px', borderBottom: '2px solid white', borderLeft: '2px solid white', opacity: 0.5 }}></div>
-
         
-        {/* Abstract Architectural Graphic overlay */}
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.15, pointerEvents: 'none' }}>
-           <div style={{ width: '100%', height: '100%', backgroundImage: 'radial-gradient(circle at center, transparent 0%, #000 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEJP2gs22QgFAZKh4eic0PdYAzbFTH3VnjsRarzUzPHomoiqUhv6wpAcLS9_j0DdNYQoKunCaIaR8lgfJQtt720P3_cdSncGFOyIdOdc9I8FJ42jFnEJnKviB-7X_fCRyfFiixivF9rE9V-33pc9Gtc5ZUGDdNB8QYAsArq5C-6Iaw7_mYJHVnNRLBkeGimx-YANNtG4cLYaMD-LeL_6EV2HzCRxaQasXIS0zfdu62EZuyaLTMtTwWPiOndws6MZD3EIapMx7KG_td")', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'grayscale(100%) contrast(150%)' }}></div>
+        {/* Overlay for better contrast */}
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(56, 30, 114, 0.4)', zIndex: 1 }}></div>
+
+        {/* Corner Markers */}
+        <div style={{ position: 'absolute', top: '40px', left: '40px', width: '64px', height: '64px', borderTop: '4px solid white', borderLeft: '4px solid white', zIndex: 10 }}></div>
+        
+        <div style={{ zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '12px' }}>
+              <Activity size={32} color="#6b38d4" />
+            </div>
+            <h1 style={{ fontSize: '40px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '-0.04em', margin: 0, color: 'white' }}>Lumina</h1>
+          </div>
+          <p style={{ fontSize: '14px', fontWeight: '800', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)', letterSpacing: '0.2em' }}>ENGINEERED FOR EXCELLENCE</p>
+        </div>
+
+        <div style={{ zIndex: 10 }}>
+          <h2 className="architectural-type" style={{ fontSize: 'clamp(80px, 10vw, 140px)', fontWeight: '900', textTransform: 'uppercase', lineHeight: 0.8, letterSpacing: '-0.06em', margin: 0, color: 'white' }}>
+            BUILD<br/>
+            YOUR<br/>
+            LEGACY
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', zIndex: 10 }}>
+          <div style={{ maxWidth: '350px' }}>
+            <p style={{ fontSize: '18px', lineHeight: 1.4, fontWeight: '600', color: 'white' }}>
+              Start your journey with the world's most powerful project management ecosystem.
+            </p>
+          </div>
+          <div style={{ textAlign: 'right', color: 'white' }}>
+            <div style={{ fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', opacity: 0.6, letterSpacing: '0.1em', marginBottom: '8px' }}>v0.1 / PRE-RELEASE</div>
+            <div style={{ width: '120px', height: '4px', backgroundColor: 'white', marginLeft: 'auto' }}></div>
+          </div>
+        </div>
+
+        {/* Large Faint Logo in Background */}
+        <div style={{ position: 'absolute', right: '-5%', bottom: '10%', fontSize: 'clamp(150px, 30vw, 400px)', fontWeight: '900', color: 'rgba(255,255,255,0.05)', pointerEvents: 'none', userSelect: 'none', zIndex: 1 }}>
+          SIGNUP
         </div>
       </section>
 
-      {/* Form Side - Obsidian Dark */}
-      <section style={{ flexGrow: 1, backgroundColor: '#0f0d15', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'clamp(24px, 6vw, 48px)', position: 'relative' }}>
+      {/* Right Section: Premium Register Form */}
+      <section style={{ 
+        width: '100%', 
+        maxWidth: '700px', 
+        backgroundColor: 'var(--background)', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        padding: 'clamp(32px, 6vw, 64px)',
+        position: 'relative',
+        margin: '0 auto',
+        overflowY: 'auto'
+      }}>
         
-        {/* Global Corner Markers */}
-        <div style={{ position: 'absolute', top: '32px', right: '32px', width: '48px', height: '48px', borderTop: '2px solid rgba(255,255,255,0.1)', borderRight: '2px solid rgba(255,255,255,0.1)' }}></div>
-        <div style={{ position: 'absolute', bottom: '32px', right: '32px', color: 'rgba(255,255,255,0.2)', fontSize: '10px', fontWeight: '700' }}>SECURE ACCESS</div>
+        <div style={{ marginBottom: '48px', position: 'relative' }}>
+          <div style={{ display: 'inline-block', backgroundColor: 'var(--surface-container-high)', padding: '8px 16px', borderRadius: '8px', marginBottom: '16px' }}>
+             <span style={{ fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--primary)' }}>v0.1 PRE-RELEASE</span>
+          </div>
+          <h2 style={{ fontSize: 'clamp(40px, 6vw, 64px)', fontWeight: '900', textTransform: 'uppercase', lineHeight: 1, marginBottom: '16px' }}>Join Lumina</h2>
+          <p style={{ fontSize: '18px', color: 'var(--on-surface-variant)', fontWeight: '500' }}>Create your account to initiate productivity.</p>
+          {error && (
+            <div className="brutalist-border" style={{ marginTop: '24px', padding: '16px', backgroundColor: 'rgba(255, 82, 82, 0.1)', borderColor: 'var(--error)' }}>
+              <p style={{ color: 'var(--error)', fontSize: '14px', fontWeight: '700', margin: 0 }}>{error}</p>
+            </div>
+          )}
+        </div>
 
-        <div style={{ width: '100%', maxWidth: '480px' }}>
-          <div style={{ marginBottom: 'clamp(32px, 8vw, 64px)' }}>
-            <h1 className="lg:hidden" style={{ fontSize: '32px', fontWeight: '900', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '16px' }}>Lumina</h1>
-            <h2 style={{ fontSize: 'clamp(28px, 5vw, 32px)', color: 'var(--on-surface)', fontWeight: '800', textTransform: 'uppercase', lineHeight: 1, marginBottom: '8px' }}>Sign Up</h2>
-            <div style={{ height: '4px', width: '96px', backgroundColor: 'var(--primary)' }}></div>
-            {error && <p style={{ color: 'var(--error)', marginTop: '16px', fontSize: '14px', fontWeight: '700' }}>{error}</p>}
-            <p style={{ fontSize: '16px', color: 'var(--on-surface-variant)', marginTop: '16px' }}>Create an account to start managing your tasks.</p>
+        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '24px', position: 'relative', zIndex: 10 }}>
+          {/* Full Name */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Full Name</label>
+            <input 
+              className="brutalist-input"
+              style={{ width: '100%', padding: '18px', backgroundColor: 'var(--surface-container-low)', border: '2px solid var(--outline-variant)', color: 'white', outline: 'none', fontSize: '16px', transition: 'all 0.2s' }} 
+              placeholder="e.g. Commander Shepard" 
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'var(--primary)';
+                e.target.style.backgroundColor = 'var(--surface-container-high)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'var(--outline-variant)';
+                e.target.style.backgroundColor = 'var(--surface-container-low)';
+              }}
+            />
           </div>
 
-          {/* Registration Form */}
-          <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {/* Name Field */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '14px', color: 'var(--on-surface)', textTransform: 'uppercase', fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}>
-                Full Name
-                <span style={{ color: 'var(--primary)' }}>*</span>
-              </label>
-              <input 
-                className="brutalist-input" 
-                style={{ width: '100%', padding: '14px', backgroundColor: 'var(--surface-container)', color: 'var(--on-surface)', border: '2px solid var(--outline-variant)', outline: 'none' }} 
-                placeholder="John Doe" 
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-              />
-            </div>
-
-            {/* Email Field */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '14px', color: 'var(--on-surface)', textTransform: 'uppercase', fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}>
-                Email
-                <span style={{ color: 'var(--primary)' }}>*</span>
-              </label>
-              <input 
-                className="brutalist-input" 
-                style={{ width: '100%', padding: '14px', backgroundColor: 'var(--surface-container)', color: 'var(--on-surface)', border: '2px solid var(--outline-variant)', outline: 'none' }} 
-                placeholder="john@example.com" 
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-              />
-            </div>
-
-            {/* Password Field */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '14px', color: 'var(--on-surface)', textTransform: 'uppercase', fontWeight: '700', display: 'flex', justifyContent: 'space-between' }}>
-                Password
-                <span style={{ color: 'var(--primary)' }}>*</span>
-              </label>
-              <input 
-                className="brutalist-input" 
-                style={{ width: '100%', padding: '14px', backgroundColor: 'var(--surface-container)', color: 'var(--on-surface)', border: '2px solid var(--outline-variant)', outline: 'none' }} 
-                placeholder="********" 
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-              />
-            </div>
-
-            {/* Primary CTA */}
-            <button 
-              disabled={loading}
-              className="brutalist-button" 
-              style={{ 
-                width: '100%', 
-                marginTop: '24px', 
-                backgroundColor: loading ? 'var(--outline)' : 'var(--primary-container)', 
-                color: 'var(--on-primary-container)', 
-                padding: '20px', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
-                border: '4px solid var(--on-surface)',
-                cursor: loading ? 'not-allowed' : 'pointer'
+          {/* Email */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Email Address</label>
+            <input 
+              className="brutalist-input"
+              style={{ width: '100%', padding: '18px', backgroundColor: 'var(--surface-container-low)', border: '2px solid var(--outline-variant)', color: 'white', outline: 'none', fontSize: '16px', transition: 'all 0.2s' }} 
+              placeholder="identity@lumina.com" 
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'var(--primary)';
+                e.target.style.backgroundColor = 'var(--surface-container-high)';
               }}
-              type="submit"
-            >
-              <span style={{ fontSize: 'clamp(20px, 4vw, 32px)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
-                {loading ? 'Working...' : 'Sign Up'}
-              </span>
-              <ArrowRight size={32} />
-            </button>
-          </form>
+              onBlur={(e) => {
+                e.target.style.borderColor = 'var(--outline-variant)';
+                e.target.style.backgroundColor = 'var(--surface-container-low)';
+              }}
+            />
+          </div>
 
-          {/* OAuth Section */}
-          <div style={{ marginTop: '32px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--outline-variant)' }}></div>
-              <span style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--on-surface-variant)', letterSpacing: '0.1em' }}>Or</span>
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--outline-variant)' }}></div>
-            </div>
+          {/* Password */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Password</label>
+            <input 
+              className="brutalist-input"
+              style={{ width: '100%', padding: '18px', backgroundColor: 'var(--surface-container-low)', border: '2px solid var(--outline-variant)', color: 'white', outline: 'none', fontSize: '16px', transition: 'all 0.2s' }} 
+              placeholder="••••••••" 
+              type="password"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'var(--primary)';
+                e.target.style.backgroundColor = 'var(--surface-container-high)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'var(--outline-variant)';
+                e.target.style.backgroundColor = 'var(--surface-container-low)';
+              }}
+            />
+          </div>
 
-            <button className="brutalist-button" style={{ 
+          <button 
+            disabled={loading}
+            className="brutalist-button"
+            style={{ 
               width: '100%', 
-              backgroundColor: 'var(--surface)', 
-              color: 'var(--on-surface)', 
-              border: '2px solid var(--on-surface)', 
-              padding: '14px', 
+              background: 'linear-gradient(135deg, var(--primary) 0%, #9333ea 100%)', 
+              color: '#ffffff', 
+              padding: '20px', 
+              fontSize: '16px', 
+              fontWeight: '900', 
+              textTransform: 'uppercase', 
+              border: 'none', 
               display: 'flex', 
               justifyContent: 'center', 
               alignItems: 'center', 
-              gap: '12px',
-              cursor: 'pointer'
-            }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              <span style={{ fontWeight: '700', textTransform: 'uppercase' }}>Sign up with Google</span>
-            </button>
-          </div>
+              gap: '16px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              marginTop: '16px',
+              boxShadow: '0 20px 40px -10px rgba(107, 56, 212, 0.4)'
+            }}
+          >
+            {loading ? 'Processing...' : 'Create Account'}
+            <ArrowRight size={24} />
+          </button>
+        </form>
 
-          <div style={{ marginTop: '48px', textAlign: 'center' }}>
-            <p style={{ color: 'var(--on-surface-variant)', fontSize: '16px' }}>
-              Already have an account?{' '}
-              <Link to="/login" style={{ color: 'var(--primary)', fontWeight: '700', textDecoration: 'underline' }}>
-                Login
-              </Link>
-            </p>
-          </div>
-
+        <div style={{ margin: '32px 0', display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--outline-variant)' }}></div>
+          <span style={{ fontSize: '10px', fontWeight: '800', textTransform: 'uppercase', opacity: 0.3, letterSpacing: '0.2em' }}>Direct Connect</span>
+          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--outline-variant)' }}></div>
         </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="brutalist-border" style={{ padding: '16px 32px', backgroundColor: 'white', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', color: 'black', fontWeight: '800', fontSize: '14px', textTransform: 'uppercase' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Signup with Google
+          </div>
+        </div>
+
+        <div style={{ marginTop: '48px', textAlign: 'center' }}>
+           <p style={{ fontSize: '16px', color: 'var(--on-surface-variant)', fontWeight: '500' }}>
+             Already a member? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: '900', textDecoration: 'none', borderBottom: '2px solid var(--primary)' }}>Secure Login</Link>
+           </p>
+        </div>
+
       </section>
     </div>
   );
