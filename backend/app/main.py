@@ -16,9 +16,9 @@ app = FastAPI(
     redoc_url="/api/redoc"
 )
 
-# CORS configuration
 origins = [
     settings.FRONTEND_URL,
+    "https://lumina-task-manager.onrender.com",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
