@@ -101,3 +101,50 @@ async def request_to_join(token: str, current_user=Depends(get_current_user), db
     })
 
     return {"success": True, "message": "Request sent! Wait for the admin to approve you.", "data": {"status": "pending"}}
+
+async def join_project_internal(token: str, user: dict, db):
+    """Helper to create a join request automatically (used by Google Auth)"""
+    invite = await db.inviteTokens.find_one({"token": token})
+    if not invite:
+        return
+    
+    project_oid = ObjectId(invite["projectId"])
+    project = await db.projects.find_one({"_id": project_oid})
+    if not project:
+        return
+
+    user_id_str = str(user["_id"])
+    
+    # Check if already a member
+    if any(str(m) == user_id_str for m in project.get("members", [])):
+        return
+
+    # Check if already has a pending request
+    existing_request = await db.joinRequests.find_one({
+        "projectId": str(project_oid),
+        "userId": user_id_str,
+        "status": "pending"
+    })
+    if existing_request:
+        return
+
+    # Create join request
+    new_request = {
+        "projectId": str(project_oid),
+        "projectName": project["name"],
+        "userId": user_id_str,
+        "userName": user["name"],
+        "userEmail": user["email"],
+        "userAvatar": user.get("avatar"),
+        "status": "pending",
+        "createdAt": datetime.now(timezone.utc)
+    }
+    await db.joinRequests.insert_one(new_request)
+    
+    # Notify owner in real-time
+    owner_id = str(project.get("owner"))
+    await events.broadcast(f"user-{owner_id}", "NEW_JOIN_REQUEST", {
+        "projectId": str(project_oid),
+        "projectName": project["name"],
+        "userName": user["name"]
+    })

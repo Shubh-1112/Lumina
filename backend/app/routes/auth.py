@@ -81,6 +81,7 @@ async def login(user_data: UserLogin, db=Depends(get_database)):
 async def google_auth(login_data: GoogleLogin, db=Depends(get_database)):
     try:
         # Verify the token
+        print(f"🔍 DEBUG: Verifying Google token...")
         idinfo = id_token.verify_oauth2_token(
             login_data.credential, 
             requests.Request(), 
@@ -95,11 +96,14 @@ async def google_auth(login_data: GoogleLogin, db=Depends(get_database)):
         user = await db.users.find_one({"email": email.lower()})
         
         if not user:
-            # Create new user
+            print(f"🔍 DEBUG: Creating new user for {email}")
+            import secrets
+            # Ensure the password is well within bcrypt's 72-byte limit
+            dummy_pw = secrets.token_urlsafe(32)
             user_doc = {
                 "name": name,
                 "email": email.lower(),
-                "password": hash_password("OAUTH_USER_RANDOM_PW_" + str(ObjectId())), # Secure dummy password
+                "password": hash_password(dummy_pw), 
                 "avatar": picture or generate_avatar_url(name),
                 "createdAt": datetime.now(timezone.utc),
                 "updatedAt": datetime.now(timezone.utc),
@@ -107,10 +111,17 @@ async def google_auth(login_data: GoogleLogin, db=Depends(get_database)):
             result = await db.users.insert_one(user_doc)
             user = await db.users.find_one({"_id": result.inserted_id})
         else:
+            print(f"🔍 DEBUG: Existing user logged in: {email}")
             # Update avatar if it's from Google and changed
             if picture and user.get("avatar") != picture:
                 await db.users.update_one({"_id": user["_id"]}, {"$set": {"avatar": picture, "updatedAt": datetime.now(timezone.utc)}})
                 user["avatar"] = picture
+
+        # Handle inviteToken if present
+        if login_data.inviteToken:
+            print(f"🔍 DEBUG: Processing invite token {login_data.inviteToken} for {email}")
+            from app.routes.invite import join_project_internal
+            await join_project_internal(login_data.inviteToken, user, db)
 
         token = create_access_token({"sub": str(user["_id"])})
 
@@ -124,11 +135,15 @@ async def google_auth(login_data: GoogleLogin, db=Depends(get_database)):
             }
         }
     except ValueError as e:
+        print(f"❌ DEBUG: Google Auth ValueError: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Invalid Google token: {str(e)}"
         )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"❌ DEBUG: Google Auth Exception: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Auth error: {str(e)}"

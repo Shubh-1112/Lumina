@@ -18,6 +18,11 @@ const Login = () => {
   const searchParams = new URLSearchParams(location.search);
   const redirectPath = searchParams.get('redirect') || '/dashboard';
 
+  // Extract invite token if present in redirect path
+  const inviteToken = redirectPath.includes('/join') 
+    ? (redirectPath.split('/join/')[1]?.split('?')[0] || redirectPath.split('token=')[1])
+    : null;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -53,7 +58,8 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await api.post('/auth/google', {
-        credential: credentialResponse.credential
+        credential: credentialResponse.credential,
+        inviteToken: inviteToken
       });
  
       if (response.success) {
